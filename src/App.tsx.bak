@@ -1,0 +1,17 @@
+import React from 'react';
+import { ChakraProvider } from '@chakra-ui/react';
+import MainLayout from './layouts/MainLayout';
+
+function App() {
+  return (
+    <ChakraProvider>
+      <MainLayout>
+        <div className="p-4">
+          <h2 className="text-xl font-semibold">תוכן ראשי</h2>
+        </div>
+      </MainLayout>
+    </ChakraProvider>
+  );
+}
+
+export default App;
