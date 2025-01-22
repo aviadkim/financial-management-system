@@ -1,11 +1,11 @@
 import React from 'react';
 import { ChakraProvider } from '@chakra-ui/react';
-import TabsContainer from './components/tabs/TabsContainer';
+import PreviewInterface from './components/client/PreviewInterface';
 
 function App() {
   return (
     <ChakraProvider>
-      <TabsContainer />
+      <PreviewInterface />
     </ChakraProvider>
   );
 }

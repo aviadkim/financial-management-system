@@ -3,9 +3,9 @@
 @tailwind utilities;
 
 body {
+  direction: rtl;
   margin: 0;
   font-family: 'Assistant', sans-serif;
-  direction: rtl;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
