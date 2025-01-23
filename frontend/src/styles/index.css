@@ -6,25 +6,4 @@ body {
   margin: 0;
   font-family: 'Assistant', sans-serif;
   direction: rtl;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
 }
-
-.grid-container {
-  display: grid;
-  grid-template-areas: 
-    "header header header"
-    "sidebar main alerts"
-    "footer footer footer";
-  grid-template-columns: 250px 1fr 300px;
-  grid-template-rows: 80px 1fr 60px;
-  min-height: 100vh;
-  gap: 20px;
-  padding: 20px;
-}
-
-.header { grid-area: header; }
-.sidebar { grid-area: sidebar; }
-.main { grid-area: main; }
-.alerts { grid-area: alerts; }
-.footer { grid-area: footer; }
