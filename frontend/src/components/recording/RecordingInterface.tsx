@@ -24,10 +24,18 @@ const RecordingInterface: React.FC<RecordingInterfaceProps> = ({ isOpen, onClose
   const [audioUpload, setAudioUpload] = useState<{file: File | null; status: string; progress: number}>({ file: null, status: 'idle', progress: 0 });
 
   const handleFileUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0] || null;
+    const file = event.target.files?.[0];
     if (!file) return;
+
     setAudioUpload({ file, status: 'uploading', progress: 0 });
     setShowRecordingOptions(false);
+
+    // יצירת נגן אודיו
+    const audioUrl = URL.createObjectURL(file);
+    const audio = new Audio(audioUrl);
+    setAudioPlayer(audio);
+
+    // התחלת תמלול
     setTimeout(() => {
       setAudioUpload(prev => ({ ...prev, status: 'processing', progress: 100 }));
       setIsRecording(true);
@@ -76,6 +84,20 @@ const RecordingInterface: React.FC<RecordingInterfaceProps> = ({ isOpen, onClose
     }
   } as const;
 
+  // נגן אודיו
+  const [audioPlayer, setAudioPlayer] = useState<HTMLAudioElement | null>(null);
+  const [isPlaying, setIsPlaying] = useState(false);
+
+  const handlePlayPause = () => {
+    if (audioPlayer) {
+      if (isPlaying) {
+        audioPlayer.pause();
+      } else {
+        audioPlayer.play();
+      }
+      setIsPlaying(!isPlaying);
+    }
+  };
   const transcriptData = [
     { 
       id: 1, 
@@ -191,6 +213,20 @@ const RecordingInterface: React.FC<RecordingInterfaceProps> = ({ isOpen, onClose
           </div>
           <div className="flex gap-3">
             <button
+              onClick={() => document.getElementById('audio-upload')?.click()}
+              className="px-4 py-2 rounded-lg flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white"
+            >
+              <Upload className="w-5 h-5" />
+              העלאת הקלטה
+              <input
+                id="audio-upload"
+                type="file"
+                accept="audio/*"
+                className="hidden"
+                onChange={handleFileUpload}
+              />
+            </button>
+            <button
               onClick={() => setIsRecording(!isRecording)}
               className={`px-4 py-2 rounded-lg flex items-center gap-2 ${
                 isRecording 
@@ -269,6 +305,17 @@ const RecordingInterface: React.FC<RecordingInterfaceProps> = ({ isOpen, onClose
 
         {/* Transcription Area */}
         <div className="bg-white border-l p-4 overflow-y-auto">
+          {audioPlayer && (
+            <div className="mb-4 flex items-center gap-4">
+              <button
+                onClick={handlePlayPause}
+                className="px-4 py-2 rounded-lg flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white"
+              >
+                {isPlaying ? 'עצור': 'נגן'}
+              </button>
+              <div className="text-sm text-gray-600">קובץ: {audioUpload.file?.name}</div>
+            </div>
+          )}
           <div>
             <h3 className="font-medium text-lg mb-4">תמלול שיחה</h3>
             <div className="space-y-4">
