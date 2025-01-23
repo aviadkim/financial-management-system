@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ChevronDown, ChevronUp, Mic, Phone, Upload, FileText, Mail, X, Check } from 'lucide-react';
 
 interface RecordingInterfaceProps {
@@ -8,11 +8,36 @@ interface RecordingInterfaceProps {
 
 type TopicKey = 'needs_update' | 'risk_profile' | 'disclosures' | null;
 
+interface Question {
+  id: number;
+  text: string;
+  asked: boolean;
+  timestamp: string | null;
+  answer: string | null;
+}
+
 const RecordingInterface: React.FC<RecordingInterfaceProps> = ({ isOpen, onClose }) => {
   const [selectedTopic, setSelectedTopic] = useState<TopicKey>(null);
   const [isRecording, setIsRecording] = useState(false);
-  const [recordingTime, setRecordingTime] = useState('00:00:00');
+  const [timer, setTimer] = useState('00:00:00');
   const [showRecordingOptions, setShowRecordingOptions] = useState(true);
+
+  useEffect(() => {
+    let interval: NodeJS.Timeout;
+    if (isRecording) {
+      let seconds = 0;
+      interval = setInterval(() => {
+        seconds++;
+        const hours = Math.floor(seconds / 3600);
+        const minutes = Math.floor((seconds % 3600) / 60);
+        const remainingSeconds = seconds % 60;
+        setTimer(
+          `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(remainingSeconds).padStart(2, '0')}`
+        );
+      }, 1000);
+    }
+    return () => clearInterval(interval);
+  }, [isRecording]);
 
   const topics = {
     'needs_update': {
@@ -143,7 +168,7 @@ const RecordingInterface: React.FC<RecordingInterfaceProps> = ({ isOpen, onClose
             {isRecording && (
               <div className="flex items-center gap-2 text-red-500 text-sm mt-1">
                 <span className="w-2 h-2 bg-red-500 rounded-full animate-pulse"></span>
-                מקליט... {recordingTime}
+                מקליט... {timer}
               </div>
             )}
           </div>
@@ -157,7 +182,7 @@ const RecordingInterface: React.FC<RecordingInterfaceProps> = ({ isOpen, onClose
               }`}
             >
               <Mic className="w-5 h-5" />
-              {isRecording ? 'מקליט...' : 'התחל הקלטה'}
+              {isRecording ? 'עצור הקלטה' : 'התחל הקלטה'}
             </button>
             <button onClick={onClose} className="text-gray-600 hover:text-gray-800">
               <X className="w-6 h-6" />
@@ -320,7 +345,7 @@ const RecordingInterface: React.FC<RecordingInterfaceProps> = ({ isOpen, onClose
                 </div>
               </div>
             </div>
-
+            
             {/* Action Items */}
             <div>
               <h4 className="font-medium mb-3 text-sm text-gray-700">משימות להמשך</h4>

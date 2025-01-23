@@ -1,47 +1,40 @@
 import React, { useState } from 'react';
-import { User, Phone, Mail, Clock, FileText, Briefcase } from 'lucide-react';
+import { User, FileText, Clock, Briefcase } from 'lucide-react';
 import RecordingInterface from '../recording/RecordingInterface';
 
 const TabsContainer = () => {
-  const [activeTab, setActiveTab] = useState('recordings');
-  const [isRecordingOpen, setIsRecordingOpen] = useState(false);
+  const [activeTab, setActiveTab] = useState('overview');
 
   return (
     <div className="min-h-screen bg-gray-50" dir="rtl">
-      <header className="bg-white shadow-sm">
-        <div className="max-w-7xl mx-auto px-6 py-4">
-          <div className="flex justify-between items-center">
-            <div className="flex items-center gap-4">
-              <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center">
-                <User className="w-8 h-8 text-blue-600" />
-              </div>
-              <div>
-                <h1 className="text-2xl font-bold text-gray-800">דני כהן</h1>
-                <div className="flex gap-4 mt-2 text-gray-600">
-                  <div className="flex items-center gap-2">
-                    <Phone className="w-4 h-4" />
-                    <span>054-1234567</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Mail className="w-4 h-4" />
-                    <span>dani@example.com</span>
-                  </div>
-                </div>
+      {/* Header */}
+      <div className="bg-white shadow-sm p-4">
+        <div className="max-w-7xl mx-auto flex justify-between items-center">
+          <div className="flex items-center gap-4">
+            <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center">
+              <User className="w-8 h-8 text-blue-600" />
+            </div>
+            <div>
+              <h1 className="text-2xl font-bold">דני כהן</h1>
+              <div className="flex gap-4 mt-2 text-gray-600">
+                <span>dani@example.com</span>
+                <span>054-1234567</span>
               </div>
             </div>
-            <button 
-              onClick={() => setIsRecordingOpen(true)}
-              className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors"
-            >
-              תיעוד שיחה חדשה
-            </button>
           </div>
+          <button 
+            className="bg-blue-600 text-white px-4 py-2 rounded-lg"
+            onClick={() => setActiveTab('recordings')}
+          >
+            תיעוד שיחה
+          </button>
         </div>
-      </header>
+      </div>
 
+      {/* Navigation */}
       <nav className="bg-white border-b">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="flex space-x-6">
+        <div className="max-w-7xl mx-auto">
+          <div className="flex gap-8">
             {[
               { id: 'overview', label: 'סקירה כללית' },
               { id: 'portfolio', label: 'תיק השקעות' },
@@ -51,10 +44,10 @@ const TabsContainer = () => {
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
-                className={`py-4 px-2 border-b-2 transition-colors ${
+                className={`py-4 border-b-2 ${
                   activeTab === tab.id
                     ? 'border-blue-600 text-blue-600'
-                    : 'border-transparent text-gray-600 hover:text-gray-800'
+                    : 'border-transparent'
                 }`}
               >
                 {tab.label}
@@ -64,15 +57,46 @@ const TabsContainer = () => {
         </div>
       </nav>
 
+      {/* Content */}
       <main className="max-w-7xl mx-auto p-6">
-        {activeTab === 'recordings' && (
-          <div className="bg-white rounded-lg shadow-sm overflow-hidden">
-            <RecordingInterface 
-              isOpen={isRecordingOpen} 
-              onClose={() => setIsRecordingOpen(false)} 
-            />
+        {activeTab === 'overview' && (
+          <div className="grid grid-cols-3 gap-6">
+            <div className="bg-white p-6 rounded-lg shadow">
+              <div className="flex justify-between">
+                <div>
+                  <div className="text-gray-600">שווי תיק</div>
+                  <div className="text-2xl font-bold mt-1">₪450,000</div>
+                  <div className="text-green-500">+5.2%</div>
+                </div>
+                <Briefcase className="w-6 h-6 text-gray-400" />
+              </div>
+            </div>
+
+            <div className="bg-white p-6 rounded-lg shadow">
+              <div className="flex justify-between">
+                <div>
+                  <div className="text-gray-600">פגישה אחרונה</div>
+                  <div className="text-2xl font-bold mt-1">15/01/2025</div>
+                  <div className="text-gray-500">לפני שבוע</div>
+                </div>
+                <Clock className="w-6 h-6 text-gray-400" />
+              </div>
+            </div>
+
+            <div className="bg-white p-6 rounded-lg shadow">
+              <div className="flex justify-between">
+                <div>
+                  <div className="text-gray-600">מספר תמלולים</div>
+                  <div className="text-2xl font-bold mt-1">12</div>
+                  <div className="text-gray-500">3 החודש</div>
+                </div>
+                <FileText className="w-6 h-6 text-gray-400" />
+              </div>
+            </div>
           </div>
         )}
+
+        {activeTab === 'recordings' && <RecordingInterface isOpen={true} onClose={() => setActiveTab('overview')} />}
       </main>
     </div>
   );
