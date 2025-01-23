@@ -3,13 +3,13 @@ import { User, Phone, Mail, Clock, FileText, Briefcase } from 'lucide-react';
 import RecordingInterface from '../recording/RecordingInterface';
 
 const TabsContainer = () => {
-  const [activeTab, setActiveTab] = useState('recordings'); // שינינו לטאב ההקלטות כברירת מחדל
+  const [activeTab, setActiveTab] = useState('recordings');
+  const [isRecordingOpen, setIsRecordingOpen] = useState(false);
 
   return (
     <div className="min-h-screen bg-gray-50" dir="rtl">
-      {/* Header Section */}
       <header className="bg-white shadow-sm">
-        <div className="max-w-7xl mx-auto p-4">
+        <div className="max-w-7xl mx-auto px-6 py-4">
           <div className="flex justify-between items-center">
             <div className="flex items-center gap-4">
               <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center">
@@ -29,11 +29,16 @@ const TabsContainer = () => {
                 </div>
               </div>
             </div>
+            <button 
+              onClick={() => setIsRecordingOpen(true)}
+              className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors"
+            >
+              תיעוד שיחה חדשה
+            </button>
           </div>
         </div>
       </header>
 
-      {/* Main Navigation */}
       <nav className="bg-white border-b">
         <div className="max-w-7xl mx-auto px-6">
           <div className="flex space-x-6">
@@ -59,51 +64,13 @@ const TabsContainer = () => {
         </div>
       </nav>
 
-      {/* Content Area */}
       <main className="max-w-7xl mx-auto p-6">
         {activeTab === 'recordings' && (
           <div className="bg-white rounded-lg shadow-sm overflow-hidden">
-            <RecordingInterface />
-          </div>
-        )}
-        
-        {activeTab === 'overview' && (
-          <div className="space-y-6">
-            {/* Quick Stats */}
-            <div className="grid grid-cols-3 gap-6">
-              <div className="bg-white rounded-lg shadow-sm p-4">
-                <div className="flex justify-between items-start">
-                  <div>
-                    <div className="text-sm text-gray-600">שווי תיק</div>
-                    <div className="text-xl font-semibold mt-1">₪450,000</div>
-                    <span className="text-sm text-green-600">+5.2%</span>
-                  </div>
-                  <Briefcase className="w-5 h-5 text-gray-400" />
-                </div>
-              </div>
-
-              <div className="bg-white rounded-lg shadow-sm p-4">
-                <div className="flex justify-between items-start">
-                  <div>
-                    <div className="text-sm text-gray-600">פגישה אחרונה</div>
-                    <div className="text-xl font-semibold mt-1">15/01/2025</div>
-                    <div className="text-sm text-gray-500">לפני שבוע</div>
-                  </div>
-                  <Clock className="w-5 h-5 text-gray-400" />
-                </div>
-              </div>
-
-              <div className="bg-white rounded-lg shadow-sm p-4">
-                <div className="flex justify-between items-start">
-                  <div>
-                    <div className="text-sm text-gray-600">מספר תמלולים</div>
-                    <div className="text-xl font-semibold mt-1">12</div>
-                    <div className="text-sm text-gray-500">3 החודש</div>
-                  </div>
-                  <FileText className="w-5 h-5 text-gray-400" />
-                </div>
-              </div>
-            </div>
+            <RecordingInterface 
+              isOpen={isRecordingOpen} 
+              onClose={() => setIsRecordingOpen(false)} 
+            />
           </div>
         )}
       </main>
