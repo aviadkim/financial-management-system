@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
-import { User, Phone, Mail, Clock, FileText, Briefcase, ChevronDown, ChevronUp } from 'lucide-react';
+import { User, Phone, Mail, Clock, FileText, Briefcase } from 'lucide-react';
 import RecordingInterface from '../recording/RecordingInterface';
 
 const TabsContainer = () => {
-  const [activeTab, setActiveTab] = useState('overview');
-  const [isRecordingModalOpen, setIsRecordingModalOpen] = useState(false);
+  const [activeTab, setActiveTab] = useState('recordings'); // שינינו לטאב ההקלטות כברירת מחדל
 
   return (
     <div className="min-h-screen bg-gray-50" dir="rtl">
@@ -29,17 +28,6 @@ const TabsContainer = () => {
                   </div>
                 </div>
               </div>
-            </div>
-            <div className="flex gap-3">
-              <button 
-                onClick={() => setIsRecordingModalOpen(true)}
-                className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors"
-              >
-                תיעוד שיחה
-              </button>
-              <button className="bg-white border text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-50 transition-colors">
-                עריכת פרטים
-              </button>
             </div>
           </div>
         </div>
@@ -72,7 +60,13 @@ const TabsContainer = () => {
       </nav>
 
       {/* Content Area */}
-      <main className="max-w-7xl mx-auto px-6 py-6">
+      <main className="max-w-7xl mx-auto p-6">
+        {activeTab === 'recordings' && (
+          <div className="bg-white rounded-lg shadow-sm overflow-hidden">
+            <RecordingInterface />
+          </div>
+        )}
+        
         {activeTab === 'overview' && (
           <div className="space-y-6">
             {/* Quick Stats */}
@@ -108,57 +102,6 @@ const TabsContainer = () => {
                   </div>
                   <FileText className="w-5 h-5 text-gray-400" />
                 </div>
-              </div>
-            </div>
-
-            {/* Recent Notes */}
-            <div className="bg-white rounded-lg shadow-sm p-6">
-              <h3 className="font-medium text-lg mb-4">הערות אחרונות</h3>
-              <div className="space-y-4">
-                <div className="bg-gray-50 rounded-lg p-4">
-                  <div className="text-gray-900">מעוניין בהשקעות ירוקות</div>
-                  <div className="text-xs text-gray-500 mt-1">15/01/2025</div>
-                </div>
-                <div className="bg-gray-50 rounded-lg p-4">
-                  <div className="text-gray-900">בקשה לבדיקת אפשרויות השקעה נוספות</div>
-                  <div className="text-xs text-gray-500 mt-1">10/01/2025</div>
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {activeTab === 'recordings' && (
-          <RecordingInterface isOpen={isRecordingModalOpen} onClose={() => setIsRecordingModalOpen(false)} />
-        )}
-
-        {activeTab === 'portfolio' && (
-          <div className="bg-white rounded-lg shadow-sm p-6">
-            <h2 className="text-xl font-semibold mb-6">תיק השקעות</h2>
-            <div className="grid grid-cols-2 gap-6">
-              <div className="bg-gray-50 rounded-lg p-4">
-                <h3 className="font-medium mb-2">התפלגות השקעות</h3>
-                <div className="text-sm text-gray-600">יוצג בקרוב...</div>
-              </div>
-              <div className="bg-gray-50 rounded-lg p-4">
-                <h3 className="font-medium mb-2">ביצועים</h3>
-                <div className="text-sm text-gray-600">יוצג בקרוב...</div>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {activeTab === 'history' && (
-          <div className="bg-white rounded-lg shadow-sm p-6">
-            <h2 className="text-xl font-semibold mb-6">היסטוריית פעילות</h2>
-            <div className="space-y-4">
-              <div className="border-b pb-4">
-                <div className="text-sm text-gray-500">15/01/2025</div>
-                <div className="mt-1">פגישת עדכון - סקירת תיק השקעות</div>
-              </div>
-              <div className="border-b pb-4">
-                <div className="text-sm text-gray-500">10/01/2025</div>
-                <div className="mt-1">עדכון פרטי קשר</div>
               </div>
             </div>
           </div>

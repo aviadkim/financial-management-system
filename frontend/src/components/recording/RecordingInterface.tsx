@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Mic, Phone, Upload, ChevronDown, ChevronUp, FileText, Mail, X, Check } from 'lucide-react';
+import { ChevronDown, ChevronUp, Mic, Phone, Upload, FileText, Mail, X, Check } from 'lucide-react';
 
 interface RecordingInterfaceProps {
   isOpen: boolean;
