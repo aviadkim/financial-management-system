@@ -21,18 +21,6 @@ const RecordingInterface: React.FC<RecordingInterfaceProps> = ({ isOpen, onClose
   const [isRecording, setIsRecording] = useState(false);
   const [timer, setTimer] = useState('00:00:00');
   const [showRecordingOptions, setShowRecordingOptions] = useState(true);
-  const [audioUpload, setAudioUpload] = useState<{file: File | null; status: string; progress: number}>({ file: null, status: 'idle', progress: 0 });
-
-  const handleFileUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0] || null;
-    if (!file) return;
-    setAudioUpload({ file, status: 'uploading', progress: 0 });
-    setShowRecordingOptions(false);
-    setTimeout(() => {
-      setAudioUpload(prev => ({ ...prev, status: 'processing', progress: 100 }));
-      setIsRecording(true);
-    }, 2000);
-  };
 
   useEffect(() => {
     let interval: NodeJS.Timeout;
@@ -137,15 +125,7 @@ const RecordingInterface: React.FC<RecordingInterfaceProps> = ({ isOpen, onClose
 
           <button 
             className="p-6 border rounded-lg text-right hover:bg-blue-50 hover:border-blue-200 transition-all"
-            onClick={() => document.getElementById('audio-upload')?.click()}
           >
-            <input
-              id="audio-upload"
-              type="file"
-              accept="audio/*"
-              className="hidden"
-              onChange={handleFileUpload}
-            />
             <div className="flex items-center gap-3 mb-4">
               <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
                 <Upload className="w-6 h-6 text-blue-600" />
@@ -174,6 +154,9 @@ const RecordingInterface: React.FC<RecordingInterfaceProps> = ({ isOpen, onClose
       </div>
     </div>
   );
+
+  if (!isOpen) return null;
+  if (showRecordingOptions) return <RecordingOptions />;
 
   return (
     <div className="fixed inset-0 bg-gray-100" dir="rtl">
